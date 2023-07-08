@@ -1,4 +1,7 @@
+import React from "react";
+
 import Provider from "./components/Provider";
+
 import "./globals.css";
 
 export const metadata = {
@@ -6,11 +9,11 @@ export const metadata = {
   description: "Ecommerce project",
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface RootLayout {
   children: React.ReactNode;
-}) {
+}
+
+const RootLayout: React.FC<RootLayout> = ({ children }) => {
   return (
     <html lang="en">
       <body>
@@ -18,4 +21,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
