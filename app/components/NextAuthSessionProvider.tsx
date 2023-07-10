@@ -4,11 +4,11 @@ import React from "react";
 import { SessionProvider } from "next-auth/react";
 
 interface IProviderProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const Provider: React.FC<IProviderProps> = ({ children }) => {
+const NextAuthSessionProvider: React.FC<IProviderProps> = ({ children }) => {
   return <SessionProvider>{children}</SessionProvider>;
 };
 
-export default Provider;
+export default NextAuthSessionProvider;

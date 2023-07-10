@@ -14,15 +14,18 @@
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "mongodb": "^5.5.0",
+    "mongoose": "^7.3.2",
     "next": "13.4.3",
     "next-auth": "^4.22.1",
     "postcss": "8.4.23",
     "prettier": "^3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.1",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
   }
