@@ -19,7 +19,7 @@
     "eslint-config-next": "13.4.3",
     "mongodb": "^5.5.0",
     "mongoose": "^7.3.2",
-    "next": "13.4.3",
+    "next": "^13.4.10",
     "next-auth": "^4.22.1",
     "postcss": "8.4.23",
     "prettier": "^3.0.0",
