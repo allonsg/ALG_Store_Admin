@@ -20,7 +20,7 @@ const DeleteProduct = ({ params }: { params: { id: string } }) => {
         .get<ProductType>("/api/products?id=" + params.id)
         .then((res) => setProductInfo(res.data));
     } catch (error: any) {
-      console.log(error?.response?.data?.message || "ERROR");
+      console.log(error.message || "ERROR");
     }
   }, [params.id]);
 
@@ -33,7 +33,7 @@ const DeleteProduct = ({ params }: { params: { id: string } }) => {
       await axios.delete("/api/products?id=" + params.id);
       goBack();
     } catch (error: any) {
-      console.log(error?.response?.data?.message || "ERROR");
+      console.log(error.message || "ERROR");
     }
   };
 
@@ -45,7 +45,7 @@ const DeleteProduct = ({ params }: { params: { id: string } }) => {
             Do you really want to delete &nbsp;&ldquo;{productInfo.title}
             &ldquo;?
           </h1>
-          <div className="flex gap-2 justify-center">
+          <div className="flex justify-center gap-2">
             <button className="btn-red" onClick={handleOnDeleteClick}>
               Yes
             </button>

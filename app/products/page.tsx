@@ -16,7 +16,7 @@ const Products = () => {
         .get<ProductType[]>("/api/products")
         .then(({ data }) => setProductList(data));
     } catch (error: any) {
-      console.log(error?.response?.data?.message || "ERROR");
+      console.log(error.message || "ERROR");
     }
   }, []);
 
@@ -24,7 +24,7 @@ const Products = () => {
     <Layout>
       <Link
         href={"/products/new"}
-        className={"bg-blue-900  rounded-md text-white py-1 px-2"}
+        className={"rounded-md  bg-blue-900 px-2 py-1 text-white"}
       >
         Add new product
       </Link>
@@ -47,7 +47,7 @@ const Products = () => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-4 h-4"
+                    className="h-4 w-4"
                   >
                     <path
                       strokeLinecap="round"
@@ -64,7 +64,7 @@ const Products = () => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-4 h-4"
+                    className="h-4 w-4"
                   >
                     <path
                       strokeLinecap="round"

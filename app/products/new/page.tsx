@@ -17,7 +17,7 @@ const NewProduct = () => {
       await axios.post("/api/products", data);
       router.push("/products");
     } catch (error: any) {
-      console.log(error?.response?.data?.message || "ERROR");
+      console.log(error.message || "ERROR");
     }
   };
 

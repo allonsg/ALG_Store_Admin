@@ -10,11 +10,11 @@ img{
     @apply max-h-[100%]
 }
 
-input, textarea {
+input, textarea, select {
     @apply border-2 border-gray-300 rounded-md px-1 w-full mb-2;
 }
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus {
     @apply border-blue-900
 }
 

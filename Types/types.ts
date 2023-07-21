@@ -16,3 +16,9 @@ export type IFormData = Omit<ProductType, "_id">;
 export type ImageListProps = {
   linkList: ProductImageType[];
 };
+
+export type CategoryType = {
+  categoryName: string;
+  _id?: string;
+  parentCategory?: CategoryType;
+};

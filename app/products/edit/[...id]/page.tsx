@@ -22,7 +22,7 @@ const EditProduct = ({ params }: { params: { id: string } }) => {
         .get<ProductType>("/api/products?id=" + params.id)
         .then((res) => setProductInfo(res.data));
     } catch (error: any) {
-      console.log(error?.response?.data?.message || "ERROR");
+      console.log(error.message || "ERROR");
     }
   }, [params.id]);
 
@@ -31,7 +31,7 @@ const EditProduct = ({ params }: { params: { id: string } }) => {
       await axios.put("/api/products", { ...data, _id: params.id });
       router.push("/products");
     } catch (error: any) {
-      console.log(error?.response?.data?.message || "ERROR");
+      console.log(error.message || "ERROR");
     }
   };
 

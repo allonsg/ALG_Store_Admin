@@ -61,7 +61,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         setIsUploading(false);
         setImages((prev) => [...prev, ...data.linkList]);
       } catch (error: any) {
-        console.log(error?.response?.data?.message || "ERROR");
+        console.log(error.message || "ERROR");
       }
     }
   };

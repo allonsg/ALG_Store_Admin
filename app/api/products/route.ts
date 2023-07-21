@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
   await dbConnect();
 
   const id = request.nextUrl.searchParams.get("id");
+
   if (id) {
     const product = await Product.findById({ _id: id });
     return NextResponse.json(product);
@@ -49,10 +50,10 @@ export async function PUT(request: Request) {
 export async function DELETE(request: NextRequest) {
   await dbConnect();
 
-  const id = request.nextUrl.searchParams.get("id");
+  const _id = request.nextUrl.searchParams.get("id");
 
-  if (!id) return NextResponse.json("No id provided");
+  if (!_id) return NextResponse.json("No id provided");
 
-  await Product.deleteOne({ _id: id });
+  await Product.deleteOne({ _id });
   return NextResponse.json("Product deleted");
 }
