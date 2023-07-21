@@ -8,12 +8,13 @@ export async function POST(request: Request) {
   await dbConnect();
 
   const body: ProductType = await request.json();
-  const { title, description, price } = body;
+  const { title, description, price, images } = body;
 
   const productDoc: ProductType = await Product.create({
     title,
     description,
     price,
+    images,
   });
   return NextResponse.json(productDoc);
 }
@@ -35,11 +36,11 @@ export async function PUT(request: Request) {
   await dbConnect();
 
   const body: ProductType = await request.json();
-  const { title, description, price, _id } = body;
+  const { title, description, price, images, _id } = body;
 
   const updatedProduct = await Product.updateOne(
     { _id },
-    { title, description, price },
+    { title, description, price, images },
   );
 
   return NextResponse.json(updatedProduct);

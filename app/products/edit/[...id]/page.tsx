@@ -45,6 +45,7 @@ const EditProduct = ({ params }: { params: { id: string } }) => {
             price={productInfo.price}
             title={productInfo.title}
             description={productInfo?.description}
+            images={productInfo?.images}
           />
         </>
       )}

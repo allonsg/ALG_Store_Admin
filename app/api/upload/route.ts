@@ -3,6 +3,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 
 import dbConnect from "@/lib/mongoose";
+import { ProductImageType } from "@/Types/types";
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -25,12 +26,12 @@ export async function POST(request: Request) {
     },
   });
 
-  const linkList: string[] = [];
+  const linkList: ProductImageType[] = [];
 
   for (const image of imageList) {
     const buffer = Buffer.from(await image.arrayBuffer());
     const extension = image.name.split(".").pop();
-    const newFileName = `${uuidv4()}.${extension}`;
+    const newFileName = `${image.name}-${uuidv4()}.${extension}`;
 
     try {
       await client.send(
@@ -43,11 +44,12 @@ export async function POST(request: Request) {
         }),
       );
 
-      const link = `https://${process.env
+      const url = `https://${process.env
         .AWS_BUCKET!}.s3.eu-central-1.amazonaws.com/${newFileName}`;
-      linkList.push(link);
+
+      linkList.push({ url, id: newFileName });
     } catch (err) {
-      console.error("Ошибка при загрузке изображения на S3:", err);
+      console.error("Error with uploading on S3:", err);
     }
   }
 
