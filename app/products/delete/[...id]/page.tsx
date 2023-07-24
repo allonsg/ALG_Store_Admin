@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import Layout from "@/app/components/Layout";
-import { ProductType } from "@/Types/types";
+import { ProductType } from "@/types/types";
 
 const DeleteProduct = ({ params }: { params: { id: string } }) => {
   const router = useRouter();

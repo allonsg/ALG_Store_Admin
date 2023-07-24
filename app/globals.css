@@ -39,7 +39,7 @@ table.basic tr td {
 }
 
 table.basic a {
-    @apply bg-blue-900 text-white text-sm p-1 px-2 rounded-md inline-flex gap-1 mr-1
+    @apply bg-blue-900 text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1
 }
 
 .btn-default, .btn-red {

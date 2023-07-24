@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import Layout from "@/app/components/Layout";
-import { IFormData, ProductType } from "@/Types/types";
+import { IFormData, ProductType } from "@/types/types";
 import ProductForm from "@/app/components/ProductForm";
 import { SubmitHandler } from "react-hook-form";
 
@@ -44,8 +44,9 @@ const EditProduct = ({ params }: { params: { id: string } }) => {
             onSubmit={onSubmit}
             price={productInfo.price}
             title={productInfo.title}
-            description={productInfo?.description}
-            images={productInfo?.images}
+            description={productInfo.description}
+            images={productInfo.images}
+            category={productInfo.category}
           />
         </>
       )}

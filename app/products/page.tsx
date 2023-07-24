@@ -5,7 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 
 import Layout from "../components/Layout";
-import { ProductType } from "@/Types/types";
+import { ProductType } from "@/types/types";
 
 const Products = () => {
   const [productList, setProductList] = useState<ProductType[]>([]);

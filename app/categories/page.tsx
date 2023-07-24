@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { withSwal } from "react-sweetalert2";
 
 import Layout from "@/app/components/Layout";
-import { CategoryType } from "@/Types/types";
+import { CategoryType } from "@/types/types";
 
 const Categories = ({ swal }: any) => {
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);

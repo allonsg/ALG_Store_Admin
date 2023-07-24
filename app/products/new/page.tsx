@@ -7,7 +7,7 @@ import { SubmitHandler } from "react-hook-form";
 
 import Layout from "@/app/components/Layout";
 import ProductForm from "@/app/components/ProductForm";
-import { IFormData } from "@/Types/types";
+import { IFormData } from "@/types/types";
 
 const NewProduct = () => {
   const router = useRouter();

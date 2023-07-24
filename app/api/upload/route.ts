@@ -3,7 +3,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 
 import dbConnect from "@/lib/mongoose";
-import { ProductImageType } from "@/Types/types";
+import { ProductImageType } from "@/types/types";
 
 export async function POST(request: Request) {
   await dbConnect();

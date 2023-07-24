@@ -2,19 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { Product } from "@/models/Product.model";
 import dbConnect from "@/lib/mongoose";
-import { ProductType } from "@/Types/types";
+import { ProductType } from "@/types/types";
 
 export async function POST(request: Request) {
   await dbConnect();
 
   const body: ProductType = await request.json();
-  const { title, description, price, images } = body;
+  const { title, description, price, images, category } = body;
 
   const productDoc: ProductType = await Product.create({
     title,
     description,
     price,
     images,
+    category,
   });
   return NextResponse.json(productDoc);
 }
@@ -37,11 +38,11 @@ export async function PUT(request: Request) {
   await dbConnect();
 
   const body: ProductType = await request.json();
-  const { title, description, price, images, _id } = body;
+  const { title, description, price, images, _id, category } = body;
 
   const updatedProduct = await Product.updateOne(
     { _id },
-    { title, description, price, images },
+    { title, description, price, images, category },
   );
 
   return NextResponse.json(updatedProduct);

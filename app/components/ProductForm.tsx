@@ -1,17 +1,18 @@
 "use client";
 
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ReactSortable } from "react-sortablejs";
+import axios from "axios";
 
 import Spinner from "@/app/components/Spinner";
 import {
+  CategoryType,
   IFormData,
   ImageListProps,
   ProductImageType,
   ProductType,
-} from "@/Types/types";
+} from "@/types/types";
 
 interface ProductFormProps extends Partial<ProductType> {
   onSubmit: SubmitHandler<IFormData>;
@@ -21,18 +22,27 @@ const ProductForm: React.FC<ProductFormProps> = ({
   title = "",
   description = "",
   price = 0,
+  category = "",
   onSubmit,
   images: existingImages = [],
 }) => {
   const { register, handleSubmit, reset, setValue } = useForm<IFormData>();
   const [images, setImages] = useState<ProductImageType[]>(existingImages);
   const [isUploading, setIsUploading] = useState(false);
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
 
   useEffect(() => {
     setValue("title", title);
+    setValue("category", category);
     setValue("description", description);
     setValue("price", price);
-  }, [description, price, setValue, title]);
+  }, [description, price, setValue, title, category, categoryList]);
+
+  useEffect(() => {
+    axios
+      .get<CategoryType[]>("/api/categories")
+      .then((res) => setCategoryList(res.data));
+  }, []);
 
   const onSubmitForm = (data: IFormData) => {
     onSubmit({ ...data, images });
@@ -74,6 +84,20 @@ const ProductForm: React.FC<ProductFormProps> = ({
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <label>Product name</label>
       <input type="text" placeholder="product name" {...register("title")} />
+
+      <label>Category</label>
+      <select
+        {...register("category")}
+        onChange={(e) => console.log(e.target.value)}
+      >
+        <option value="">Uncategorized</option>
+        {categoryList.length > 0 &&
+          categoryList.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.categoryName}
+            </option>
+          ))}
+      </select>
 
       <label>Photos</label>
       <div className="mb-2 flex flex-wrap gap-1">

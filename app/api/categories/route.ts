@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@/lib/mongoose";
 import { Category } from "@/models/Category.model";
-import { CategoryType } from "@/Types/types";
+import { CategoryType } from "@/types/types";
 
 export async function POST(request: Request) {
   await dbConnect();
