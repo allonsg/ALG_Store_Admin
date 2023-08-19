@@ -86,10 +86,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       <input type="text" placeholder="product name" {...register("title")} />
 
       <label>Category</label>
-      <select
-        {...register("category")}
-        onChange={(e) => console.log(e.target.value)}
-      >
+      <select {...register("category")}>
         <option value="">Uncategorized</option>
         {categoryList.length > 0 &&
           categoryList.map((category) => (

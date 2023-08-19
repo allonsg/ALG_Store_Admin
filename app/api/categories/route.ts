@@ -7,10 +7,13 @@ import { CategoryType } from "@/types/types";
 export async function POST(request: Request) {
   await dbConnect();
 
-  const { categoryName, parentCategory } = await request.json();
-  const categoryData = parentCategory
-    ? { categoryName, parentCategory }
-    : { categoryName };
+  const { categoryName, parentCategory, properties } = await request.json();
+  const categoryData = {
+    categoryName,
+    parentCategory: parentCategory || undefined,
+    properties,
+  };
+
   const categoryDoc = await Category.create(categoryData);
 
   return NextResponse.json(categoryDoc);
@@ -20,11 +23,12 @@ export async function PUT(request: Request) {
   await dbConnect();
 
   const body: CategoryType = await request.json();
-  const { categoryName, parentCategory, _id } = body;
+  const { categoryName, parentCategory, _id, properties } = body;
 
+  console.log(body);
   const categoryDoc = await Category.updateOne(
     { _id },
-    { categoryName, parentCategory },
+    { categoryName, parentCategory: parentCategory || undefined, properties },
   );
 
   return NextResponse.json(categoryDoc);

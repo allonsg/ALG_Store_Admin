@@ -18,8 +18,18 @@ export type ImageListProps = {
   linkList: ProductImageType[];
 };
 
+export type PropertyType = {
+  name: string;
+  values: string;
+};
+
+export type ArrayPropertyType = PropertyType & {
+  values: string[];
+};
+
 export type CategoryType = {
   categoryName: string;
   _id?: string;
   parentCategory?: CategoryType;
+  properties?: ArrayPropertyType[];
 };

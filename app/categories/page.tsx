@@ -6,13 +6,14 @@ import { useForm } from "react-hook-form";
 import { withSwal } from "react-sweetalert2";
 
 import Layout from "@/app/components/Layout";
-import { CategoryType } from "@/types/types";
+import { CategoryType, PropertyType } from "@/types/types";
 
 const Categories = ({ swal }: any) => {
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [editedCategory, setEditedCategory] = useState<CategoryType | null>(
     null,
   );
+  const [properties, setProperties] = useState<PropertyType[]>([]);
 
   const { register, handleSubmit, reset, setValue } = useForm<CategoryType>();
 
@@ -31,20 +32,28 @@ const Categories = ({ swal }: any) => {
 
   const onSubmitForm = async (data: CategoryType) => {
     try {
+      const formData = {
+        ...data,
+        properties: properties.map((p) => ({
+          name: p.name,
+          values: p.values.split(","),
+        })),
+      };
       if (editedCategory) {
         await axios.put(`/api/categories`, {
-          ...data,
+          ...formData,
           _id: editedCategory._id,
         });
 
         setEditedCategory(null);
       } else {
-        await axios.post("/api/categories", data);
+        await axios.post("/api/categories", formData);
       }
     } catch (error: any) {
       console.log(error.message || "ERROR");
     }
     reset();
+    setProperties([]);
     await fetchCategories();
   };
 
@@ -78,6 +87,48 @@ const Categories = ({ swal }: any) => {
     }
   };
 
+  const addProperty = () => {
+    setProperties((prev) => [...prev, { name: "", values: "" }]);
+  };
+
+  const handlePropertyNameChange = ({
+    newName,
+    property,
+    index,
+  }: {
+    newName: string;
+    property: PropertyType;
+    index: number;
+  }) => {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].name = newName;
+      return properties;
+    });
+  };
+
+  const handlePropertyValuesChange = ({
+    newValues,
+    property,
+    index,
+  }: {
+    newValues: string;
+    property: PropertyType;
+    index: number;
+  }) => {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].values = newValues;
+      return properties;
+    });
+  };
+
+  const removeProperty = (indexToRemove: number) => {
+    setProperties((prev) =>
+      prev.filter((p, pIndex) => pIndex !== indexToRemove),
+    );
+  };
+
   return (
     <Layout>
       <h1>Categories</h1>
@@ -86,58 +137,126 @@ const Categories = ({ swal }: any) => {
           ? `Edit Category ${editedCategory.categoryName}`
           : "Create new category"}
       </label>
-      <form className="flex gap-1" onSubmit={handleSubmit(onSubmitForm)}>
-        <input
-          className="mb-0"
-          type="text"
-          placeholder="Category name"
-          {...register("categoryName")}
-        />
-        <select className="mb-0" {...register("parentCategory")}>
-          <option value="">No parent category</option>
-          {categoryList.length > 0 &&
-            categoryList.map((category) => (
-              <option key={category._id} value={category._id}>
-                {category.categoryName}
-              </option>
+      <form onSubmit={handleSubmit(onSubmitForm)}>
+        <div className="flex gap-1">
+          <input
+            className="mb-0"
+            type="text"
+            placeholder="Category name"
+            {...register("categoryName")}
+          />
+          <select className="mb-0" {...register("parentCategory")}>
+            <option value="">No parent category</option>
+            {categoryList.length > 0 &&
+              categoryList.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.categoryName}
+                </option>
+              ))}
+          </select>
+        </div>
+
+        <div className="mb-2">
+          <label className="block">Properties</label>
+          <button
+            type="button"
+            onClick={addProperty}
+            className="btn-default mb-2 py-0 text-sm"
+          >
+            Add new property
+          </button>
+          {properties.length > 0 &&
+            properties.map((property, index) => (
+              <div key={index} className="mb-2 flex gap-1">
+                <input
+                  type="text"
+                  value={property.name}
+                  className="mb-0"
+                  onChange={(event) =>
+                    handlePropertyNameChange({
+                      newName: event.target.value,
+                      property,
+                      index,
+                    })
+                  }
+                  placeholder="property name (exmple: color)"
+                />
+                <input
+                  className="mb-0"
+                  type="text"
+                  onChange={(event) =>
+                    handlePropertyValuesChange({
+                      newValues: event.target.value,
+                      property,
+                      index,
+                    })
+                  }
+                  value={property.values}
+                  placeholder="values, comma separated"
+                />
+                <button
+                  type="button"
+                  className="btn-default"
+                  onClick={() => removeProperty(index)}
+                >
+                  Remove
+                </button>
+              </div>
             ))}
-        </select>
-        <button type="submit" className="btn-primary py-1">
-          Save
-        </button>
+        </div>
+
+        <div className="flex gap-1">
+          {editedCategory && (
+            <button
+              className="btn-default"
+              type="button"
+              onClick={() => {
+                setEditedCategory(null);
+                reset();
+              }}
+            >
+              Cancel
+            </button>
+          )}
+          <button type="submit" className="btn-primary py-1">
+            Save
+          </button>
+        </div>
       </form>
-      <table className="basic mt-4">
-        <thead>
-          <tr>
-            <td>Category name</td>
-            <td>Parent Category</td>
-            <td></td>
-          </tr>
-        </thead>
-        <tbody>
-          {categoryList.length > 0 &&
-            categoryList.map((category) => (
-              <tr key={category._id}>
-                <td>{category.categoryName}</td>
-                <td>{category.parentCategory?.categoryName}</td>
-                <td>
-                  <button
-                    className="btn-primary mr-1"
-                    onClick={() => onClickEditCategory(category)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => onClickDeleteCategory(category)}
-                    className="btn-primary"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {!editedCategory && (
+        <table className="basic mt-4">
+          <thead>
+            <tr>
+              <td>Category name</td>
+              <td>Parent Category</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            {categoryList.length > 0 &&
+              categoryList.map((category) => (
+                <tr key={category._id}>
+                  <td>{category.categoryName}</td>
+                  <td>{category.parentCategory?.categoryName}</td>
+                  <td>
+                    <button
+                      className="btn-primary mr-1"
+                      onClick={() => onClickEditCategory(category)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => onClickDeleteCategory(category)}
+                      className="btn-primary"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
     </Layout>
   );
 };
