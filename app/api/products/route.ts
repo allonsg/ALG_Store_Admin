@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   await dbConnect();
 
   const body: ProductType = await request.json();
-  const { title, description, price, images, category } = body;
+  const { title, description, price, images, category, properties } = body;
 
   const productDoc: ProductType = await Product.create({
     title,
@@ -16,6 +16,7 @@ export async function POST(request: Request) {
     price,
     images,
     category,
+    properties,
   });
   return NextResponse.json(productDoc);
 }
@@ -38,11 +39,11 @@ export async function PUT(request: Request) {
   await dbConnect();
 
   const body: ProductType = await request.json();
-  const { title, description, price, images, _id, category } = body;
+  const { title, description, price, images, _id, category, properties } = body;
 
   const updatedProduct = await Product.updateOne(
     { _id },
-    { title, description, price, images, category },
+    { title, description, price, images, category, properties },
   );
 
   return NextResponse.json(updatedProduct);

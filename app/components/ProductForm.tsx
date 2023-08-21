@@ -11,6 +11,7 @@ import {
   IFormData,
   ImageListProps,
   ProductImageType,
+  ProductPropertyType,
   ProductType,
 } from "@/types/types";
 
@@ -24,12 +25,16 @@ const ProductForm: React.FC<ProductFormProps> = ({
   price = 0,
   category = "",
   onSubmit,
+  properties = {},
   images: existingImages = [],
 }) => {
-  const { register, handleSubmit, reset, setValue } = useForm<IFormData>();
+  const { register, handleSubmit, watch, reset, setValue } =
+    useForm<IFormData>();
   const [images, setImages] = useState<ProductImageType[]>(existingImages);
   const [isUploading, setIsUploading] = useState(false);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+  const [productProperties, setProductProperties] =
+    useState<ProductPropertyType>(properties);
 
   useEffect(() => {
     setValue("title", title);
@@ -45,7 +50,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   }, []);
 
   const onSubmitForm = (data: IFormData) => {
-    onSubmit({ ...data, images });
+    onSubmit({ ...data, images, properties: productProperties });
     reset();
   };
 
@@ -80,6 +85,32 @@ const ProductForm: React.FC<ProductFormProps> = ({
     setImages(images);
   };
 
+  const propertiesToFill = [];
+
+  if (categoryList.length > 0 && watch("category")) {
+    let categoryInfo = categoryList.find(
+      ({ _id }) => _id === watch("category"),
+    );
+
+    if (categoryInfo?.properties) {
+      propertiesToFill.push(...categoryInfo.properties);
+    }
+
+    while (categoryInfo?.parentCategory?._id) {
+      const parentCategory = categoryList.find(
+        ({ _id }) => _id === categoryInfo?.parentCategory?._id,
+      );
+      if (parentCategory?.properties) {
+        propertiesToFill.push(...parentCategory.properties);
+      }
+      categoryInfo = parentCategory;
+    }
+  }
+
+  const onPropertyChange = (name: string, value: string) => {
+    setProductProperties((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <label>Product name</label>
@@ -95,6 +126,26 @@ const ProductForm: React.FC<ProductFormProps> = ({
             </option>
           ))}
       </select>
+
+      {propertiesToFill.length > 0 &&
+        propertiesToFill.map((property) => (
+          <div
+            key={property.name + property.values.join("-")}
+            className="flex gap-1"
+          >
+            <div>{property.name}</div>
+            <select
+              onChange={(e) => onPropertyChange(property.name, e.target.value)}
+              value={productProperties[property.name] || ""}
+            >
+              {property.values.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
+        ))}
 
       <label>Photos</label>
       <div className="mb-2 flex flex-wrap gap-1">

@@ -1,19 +1,21 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { withSwal } from "react-sweetalert2";
 
 import Layout from "@/app/components/Layout";
-import { CategoryType, PropertyType } from "@/types/types";
+import { ArrayPropertyType, CategoryType, PropertyType } from "@/types/types";
 
 const Categories = ({ swal }: any) => {
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [editedCategory, setEditedCategory] = useState<CategoryType | null>(
     null,
   );
-  const [properties, setProperties] = useState<PropertyType[]>([]);
+  const [properties, setProperties] = useState<
+    PropertyType[] | ArrayPropertyType[]
+  >([]);
 
   const { register, handleSubmit, reset, setValue } = useForm<CategoryType>();
 
@@ -36,7 +38,10 @@ const Categories = ({ swal }: any) => {
         ...data,
         properties: properties.map((p) => ({
           name: p.name,
-          values: p.values.split(","),
+          values:
+            typeof p.values === "string"
+              ? p.values.split(",").map((el) => el.trim())
+              : p.values,
         })),
       };
       if (editedCategory) {
@@ -57,8 +62,20 @@ const Categories = ({ swal }: any) => {
     await fetchCategories();
   };
 
+  const separatedProperties = useCallback((properties: ArrayPropertyType[]) => {
+    return properties.map((property) => {
+      return {
+        ...property,
+        values: property.values.join(", "),
+      };
+    });
+  }, []);
+
   const onClickEditCategory = async (category: CategoryType) => {
     setEditedCategory(category);
+    setProperties(
+      category.properties ? separatedProperties(category.properties) : [],
+    );
     setValue("categoryName", category.categoryName);
     setValue(
       "parentCategory",
@@ -93,11 +110,9 @@ const Categories = ({ swal }: any) => {
 
   const handlePropertyNameChange = ({
     newName,
-    property,
     index,
   }: {
     newName: string;
-    property: PropertyType;
     index: number;
   }) => {
     setProperties((prev) => {
@@ -109,11 +124,9 @@ const Categories = ({ swal }: any) => {
 
   const handlePropertyValuesChange = ({
     newValues,
-    property,
     index,
   }: {
     newValues: string;
-    property: PropertyType;
     index: number;
   }) => {
     setProperties((prev) => {
@@ -175,7 +188,6 @@ const Categories = ({ swal }: any) => {
                   onChange={(event) =>
                     handlePropertyNameChange({
                       newName: event.target.value,
-                      property,
                       index,
                     })
                   }
@@ -187,7 +199,6 @@ const Categories = ({ swal }: any) => {
                   onChange={(event) =>
                     handlePropertyValuesChange({
                       newValues: event.target.value,
-                      property,
                       index,
                     })
                   }
@@ -212,6 +223,7 @@ const Categories = ({ swal }: any) => {
               type="button"
               onClick={() => {
                 setEditedCategory(null);
+                setProperties([]);
                 reset();
               }}
             >

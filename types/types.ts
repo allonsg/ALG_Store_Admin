@@ -9,6 +9,7 @@ export type ProductType = {
   price: number;
   images: ProductImageType[];
   category: string;
+  properties: ProductPropertyType;
   _id?: string;
 };
 
@@ -21,6 +22,10 @@ export type ImageListProps = {
 export type PropertyType = {
   name: string;
   values: string;
+};
+
+export type ProductPropertyType = {
+  [key: string]: string;
 };
 
 export type ArrayPropertyType = PropertyType & {

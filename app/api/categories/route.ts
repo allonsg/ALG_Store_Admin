@@ -25,7 +25,6 @@ export async function PUT(request: Request) {
   const body: CategoryType = await request.json();
   const { categoryName, parentCategory, _id, properties } = body;
 
-  console.log(body);
   const categoryDoc = await Category.updateOne(
     { _id },
     { categoryName, parentCategory: parentCategory || undefined, properties },
