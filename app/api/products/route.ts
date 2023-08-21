@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { Product } from "@/models/Product.model";
 import dbConnect from "@/lib/mongoose";
+import { isAdminRequest } from "@/lib/auth";
+
+import { Product } from "@/models/Product.model";
+
 import { ProductType } from "@/types/types";
 
 export async function POST(request: Request) {
+  await isAdminRequest();
   await dbConnect();
 
   const body: ProductType = await request.json();
@@ -22,6 +26,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: NextRequest) {
+  await isAdminRequest();
   await dbConnect();
 
   const id = request.nextUrl.searchParams.get("id");
@@ -36,6 +41,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PUT(request: Request) {
+  await isAdminRequest();
   await dbConnect();
 
   const body: ProductType = await request.json();
@@ -50,6 +56,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: NextRequest) {
+  await isAdminRequest();
   await dbConnect();
 
   const _id = request.nextUrl.searchParams.get("id");

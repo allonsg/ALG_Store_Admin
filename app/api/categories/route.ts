@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@/lib/mongoose";
+import { isAdminRequest } from "@/lib/auth";
+
 import { Category } from "@/models/Category.model";
+
 import { CategoryType } from "@/types/types";
 
 export async function POST(request: Request) {
+  await isAdminRequest();
   await dbConnect();
 
   const { categoryName, parentCategory, properties } = await request.json();
@@ -20,6 +24,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  await isAdminRequest();
   await dbConnect();
 
   const body: CategoryType = await request.json();
@@ -34,12 +39,14 @@ export async function PUT(request: Request) {
 }
 
 export async function GET() {
+  await isAdminRequest();
   await dbConnect();
 
   return NextResponse.json(await Category.find().populate("parentCategory"));
 }
 
 export async function DELETE(request: NextRequest) {
+  await isAdminRequest();
   await dbConnect();
 
   const _id = request.nextUrl.searchParams.get("id");
