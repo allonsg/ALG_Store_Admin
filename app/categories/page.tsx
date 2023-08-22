@@ -207,7 +207,7 @@ const Categories = ({ swal }: any) => {
                 />
                 <button
                   type="button"
-                  className="btn-default"
+                  className="btn-red"
                   onClick={() => removeProperty(index)}
                 >
                   Remove
@@ -252,14 +252,14 @@ const Categories = ({ swal }: any) => {
                   <td>{category.parentCategory?.categoryName}</td>
                   <td>
                     <button
-                      className="btn-primary mr-1"
+                      className="btn-default mr-1"
                       onClick={() => onClickEditCategory(category)}
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => onClickDeleteCategory(category)}
-                      className="btn-primary"
+                      className="btn-red"
                     >
                       Delete
                     </button>
