@@ -1,6 +1,6 @@
 import React from "react";
 
-import Provider from "./components/Provider";
+import NextAuthSessionProvider from "./components/NextAuthSessionProvider";
 
 import "./globals.css";
 
@@ -17,7 +17,7 @@ const RootLayout: React.FC<RootLayout> = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        <Provider>{children}</Provider>
+        <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
       </body>
     </html>
   );
