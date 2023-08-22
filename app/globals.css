@@ -2,44 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-    @apply text-blue-900 mb-2 text-xl
-}
 
-img{
+img {
     @apply max-h-[100%]
 }
 
 input, textarea, select {
-    @apply border-2 border-gray-300 rounded-md px-1 w-full mb-2;
+    @apply border border-gray-200 rounded-sm px-2 w-full mb-2 py-2;
 }
 
 input:focus, textarea:focus, select:focus {
     @apply border-blue-900
 }
 
+h1 {
+    @apply text-gray-800 mb-4 text-xl
+}
+
 label {
-    @apply text-blue-900
+    @apply text-gray-600 text-sm
 }
 
 .btn-primary {
-    @apply bg-blue-900 text-white px-4 py-1 rounded-md
+    @apply bg-primary text-white px-4 py-1 rounded-sm shadow-sm hover:shadow-none
 }
 
 table.basic {
-    @apply w-full
+    @apply w-full bg-white rounded-sm shadow-md
 }
 
 table.basic thead tr td {
-    @apply bg-blue-100
+    @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-4 py-2
 }
 
 table.basic tr td {
-    @apply border border-blue-200 p-1
+    @apply px-4 py-1
 }
 
 table.basic a {
-    @apply bg-blue-900 text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1
+    @apply px-4 rounded-sm inline-flex mx-1 items-center gap-1 text-sm py-1
 }
 
 .btn-default, .btn-red {
@@ -47,9 +48,9 @@ table.basic a {
 }
 
 .btn-default {
-    @apply bg-gray-500 text-white
+    @apply bg-white text-gray-800 border border-gray-300 px-4 py-1 rounded-sm shadow-sm hover:shadow-none
 }
 
 .btn-red {
-    @apply bg-red-800 text-white
+    @apply bg-red-200 text-red-600 px-4 py-1 rounded-sm shadow-sm hover:shadow-none
 }

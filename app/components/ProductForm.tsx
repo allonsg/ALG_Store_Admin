@@ -129,21 +129,24 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
       {propertiesToFill.length > 0 &&
         propertiesToFill.map((property) => (
-          <div
-            key={property.name + property.values.join("-")}
-            className="flex gap-1"
-          >
-            <div>{property.name}</div>
-            <select
-              onChange={(e) => onPropertyChange(property.name, e.target.value)}
-              value={productProperties[property.name] || ""}
-            >
-              {property.values.map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
+          <div key={property.name + property.values.join("-")}>
+            <label>
+              {property.name[0].toUpperCase() + property.name.slice(1)}
+            </label>
+            <div>
+              <select
+                onChange={(e) =>
+                  onPropertyChange(property.name, e.target.value)
+                }
+                value={productProperties[property.name] || ""}
+              >
+                {property.values.map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         ))}
 
@@ -156,12 +159,15 @@ const ProductForm: React.FC<ProductFormProps> = ({
         >
           {!!images?.length &&
             images.map((img) => (
-              <div key={img.id} className="inline-block h-24">
+              <div
+                key={img.id}
+                className="inline-block h-24 rounded-md border border-gray-200 bg-white p-4 shadow-sm"
+              >
                 <img src={img.url} alt="Product Image" className="rounded-lg" />
               </div>
             ))}
         </ReactSortable>
-        <label className="flex h-24 w-24 cursor-pointer items-center justify-center gap-1 rounded-lg bg-gray-200 text-center text-sm text-gray-500">
+        <label className="flex h-24 w-24 cursor-pointer items-center justify-center gap-1 rounded-md border border-gray-200 bg-white text-center text-sm text-gray-500 shadow-sm transition-all hover:border-primary hover:text-primary">
           {isUploading ? (
             <Spinner />
           ) : (
