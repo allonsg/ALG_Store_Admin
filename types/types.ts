@@ -11,6 +11,8 @@ export type ProductType = {
   category: string;
   properties: ProductPropertyType;
   _id?: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type IFormData = Omit<ProductType, "_id">;
