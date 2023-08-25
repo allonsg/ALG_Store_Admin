@@ -31,6 +31,7 @@ table.basic {
     @apply w-full bg-white rounded-sm shadow-md
 }
 
+table.basic thead tr th,
 table.basic thead tr td {
     @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-4 py-2
 }
